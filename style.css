@@ -8,9 +8,10 @@
 }
 
 body {
+  background: var(--bg-dark);   /* ✅ Start in dark mode */
+  color: var(--text-dark);      /* ✅ White text on dark bg */
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  color: var(--text-dark);
   transition: all 0.5s ease;
   display: flex;
   justify-content: center;
