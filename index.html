@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Stopwatch App</title>
+  <style>
+    :root {
+      --bg-dark: linear-gradient(145deg, #0f0c29, #302b63);
+      --bg-light: linear-gradient(145deg, #f0f0f0, #d4d4d4);
+      --text-dark: white;
+      --text-light: #222;
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      transition: background 0.5s, color 0.5s;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+      text-align: center;
+      border: 1px solid var(--glass-border);
+      transform: perspective(1000px) rotateY(10deg);
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) perspective(1000px) rotateY(10deg); }
+      50% { transform: translateY(-10px) perspective(1000px) rotateY(10deg); }
+      100% { transform: translateY(0px) perspective(1000px) rotateY(10deg); }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .time {
+      font-size: 3rem;
+      margin: 20px 0;
+    }
+
+    .buttons button, .theme-toggle {
+      background: linear-gradient(to right, #fc466b, #3f5efb);
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      margin: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .buttons button:hover, .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .laps {
+      margin-top: 20px;
+      max-height: 150px;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .laps div {
+      margin: 5px 0;
+      padding: 5px 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⏱ Stopwatch</h1>
+    <div class="time" id="display">00:00:00</div>
+    <div class="buttons">
+      <button onclick="start()">Start</button>
+      <button onclick="pause()">Pause</button>
+      <button onclick="reset()">Reset</button>
+      <button onclick="lap()">Lap</button>
+      <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+    </div>
+    <div class="laps" id="laps"></div>
+    <audio id="beep" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
+  </div>
+
+  <script>
+    let [seconds, minutes, hours] = [0, 0, 0];
+    let display = document.getElementById("display");
+    let laps = document.getElementById("laps");
+    let timer = null;
+    let beep = document.getElementById("beep");
+    let isDark = true;
+
+    function stopwatch() {
+      seconds++;
+      if (seconds == 60) {
+        seconds = 0;
+        minutes++;
+      }
+      if (minutes == 60) {
+        minutes = 0;
+        hours++;
+      }
+
+      let h = hours < 10 ? "0" + hours : hours;
+      let m = minutes < 10 ? "0" + minutes : minutes;
+      let s = seconds < 10 ? "0" + seconds : seconds;
+
+      display.innerText = `${h}:${m}:${s}`;
+    }
+
+    function start() {
+      if (timer !== null) clearInterval(timer);
+      timer = setInterval(stopwatch, 1000);
+      beep.play();
+    }
+
+    function pause() {
+      clearInterval(timer);
+      beep.play();
+    }
+
+    function reset() {
+      clearInterval(timer);
+      [seconds, minutes, hours] = [0, 0, 0];
+      display.innerText = "00:00:00";
+      laps.innerHTML = "";
+      beep.play();
+    }
+
+    function lap() {
+      const time = display.innerText;
+      const entry = document.createElement("div");
+      entry.innerText = `Lap: ${time}`;
+      laps.appendChild(entry);
+      beep.play();
+    }
+
+    function toggleTheme() {
+      document.body.style.background = isDark ? "var(--bg-light)" : "var(--bg-dark)";
+      document.body.style.color = isDark ? "var(--text-light)" : "var(--text-dark)";
+      isDark = !isDark;
+    }
+  </script>
+</body>
+</html>
