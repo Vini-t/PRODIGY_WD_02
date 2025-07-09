@@ -1,5 +1,4 @@
 let [seconds, minutes, hours] = [0, 0, 0];
-let display = document.getElementById("display");
 let hSpan = document.getElementById("h");
 let mSpan = document.getElementById("m");
 let sSpan = document.getElementById("s");
@@ -21,7 +20,6 @@ function stopwatch() {
     minutes = 0;
     hours++;
   }
-
   updateDisplay();
 }
 
@@ -68,11 +66,7 @@ function lap() {
 
 let isDark = true;
 function toggleTheme() {
-  document.body.style.background = isDark
-    ? "var(--bg-light)"
-    : "var(--bg-dark)";
-  document.body.style.color = isDark
-    ? "var(--text-light)"
-    : "var(--text-dark)";
+  document.body.style.background = isDark ? "var(--bg-light)" : "var(--bg-dark)";
+  document.body.style.color = isDark ? "var(--text-light)" : "var(--text-dark)";
   isDark = !isDark;
 }
