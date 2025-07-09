@@ -5,8 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3D Stopwatch App</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <style>
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  </style>
 </head>
 <body>
+  <div id="particles-js"></div>
   <div class="container">
     <h1>⏱ Stopwatch</h1>
     <div class="time" id="display">
@@ -17,14 +29,19 @@
       <button onclick="pause()"><span class="icon">⏸</span></button>
       <button onclick="reset()"><span class="icon">🔄</span></button>
       <button onclick="lap()"><span class="icon">🏁</span></button>
-      <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+      <button onclick="toggleTheme()">🌓</button>
     </div>
     <div class="laps" id="laps"></div>
+
     <audio id="beep-start" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
     <audio id="beep-pause" src="https://www.soundjay.com/buttons/sounds/button-09.mp3" preload="auto"></audio>
     <audio id="beep-reset" src="https://www.soundjay.com/buttons/sounds/button-10.mp3" preload="auto"></audio>
     <audio id="beep-lap" src="https://www.soundjay.com/buttons/sounds/button-4.mp3" preload="auto"></audio>
   </div>
+
   <script src="script.js"></script>
+  <script>
+    particlesJS.load('particles-js', 'particles.json');
+  </script>
 </body>
 </html>
